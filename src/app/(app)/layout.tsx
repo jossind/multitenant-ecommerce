@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { DM_Sans, Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
+import { TRPCReactProvider } from '@/trpc/client'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,7 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${dmSans.className}  antialiased`}>{children}</body>
+      <body className={`${dmSans.className}  antialiased`}>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
+      </body>
     </html>
   )
 }
