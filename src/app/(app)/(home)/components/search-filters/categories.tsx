@@ -2,17 +2,18 @@
 
 import React, { useRef, useState, useEffect } from 'react'
 import { CategoryDropdown } from './category-dropdown'
-import { CustomCategory } from '../../types'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ListFilterIcon } from 'lucide-react'
 import { CategoriesSidebar } from './categories-sidebar'
+import { useTRPC } from '@/trpc/client'
+import { useSuspenseQuery } from '@tanstack/react-query'
+import { CategoriesGetManyOutput } from '@/modules/categories/types'
 
-type Props = {
-  data: CustomCategory[]
-}
+export const Categories = () => {
+  const trpc = useTRPC()
+  const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions())
 
-export const Categories = ({ data }: Props) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const measureRef = useRef<HTMLDivElement>(null)
   const viewAllRef = useRef<HTMLDivElement>(null)
@@ -60,7 +61,7 @@ export const Categories = ({ data }: Props) => {
     <div className="relative w-full">
       {/* Categories sidebar */}
 
-      <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} data={data} />
+      <CategoriesSidebar open={isSideBarOpen} onOpenChange={setIsSideBarOpen} />
 
       {/* Hidden div to measure all */}
       <div
@@ -68,7 +69,7 @@ export const Categories = ({ data }: Props) => {
         className="absolute opacity-0 pointer-events-none flex"
         style={{ position: 'fixed', top: -9999, left: -9999 }}
       >
-        {data?.map((category: CustomCategory) => (
+        {data?.map(category => (
           <CategoryDropdown
             key={category.id}
             category={category}
@@ -87,7 +88,7 @@ export const Categories = ({ data }: Props) => {
       >
         {data
           ?.slice(0, visibleCount)
-          .map((category: CustomCategory) => (
+          .map((category: CategoriesGetManyOutput[1]) => (
             <CategoryDropdown
               key={category.id}
               category={category}
