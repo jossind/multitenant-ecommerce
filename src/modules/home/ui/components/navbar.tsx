@@ -73,9 +73,7 @@ export const Navbar = () => {
             variant={'secondary'}
             className="border-1 border-t-0 border-b-0 px-12 h-full rounded-none bg-black text-white hover:bg-pink-400  hover:text-black transition-colors text-lg"
           >
-            <Link  href={'/admin'}>
-              Dashboard
-            </Link>
+            <Link href={'/admin'}>Dashboard</Link>
           </Button>
         </div>
       ) : (
